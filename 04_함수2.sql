@@ -88,7 +88,7 @@ SELECT TRIM('   aaaaaaaaaaaaaaaaaa             ')
 FROM DUAL;
 
 -- 날짜 데이터를 다루는 날짜 함수
--- SYSDATE : 운영체제로부터 현재 날짜와 시간 정보를 가져옴 DELETE
+-- SYSDATE : 운영체제로부터 현재 날짜와 시간 정보를 가져옴 
 SELECT SYSDATE FROM DUAL;
 
 -- 날짜 데이터는 정수값으로  +, - 가능 
@@ -125,7 +125,7 @@ FROM EMP;
 SELECT EXTRACT(YEAR FROM DATE '2023-09-15') AS 연도추출
 FROM DUAL;
 
--- 입사일만 추출
+-- 입사월만 추출
 SELECT * FROM EMP
 WHERE EXTRACT(MONTH FROM HIREDATE) = 12;
 
@@ -320,7 +320,10 @@ SELECT EMPNO, ENAME, COMM,
 FROM EMP;
 
 ----- 문제 -----
--- 1. EMPNO열에는 
+-- 1. EMPNO열에는 EMP테이블에서 사원 이름이 다섯글자 이상이며, 여섯글자 미만인 사원 정보 출력
+-- MASKING_EMPNO 열에는 사원번호 앞 두자리 외 뒷자리를 * 기호로 출력
+-- MASKING_ENAME 열에는 사원 이름의 첫 글자만 보여주고 나머지 글자 * 기호로 출력 
+
 SELECT EMPNO, 
     RPAD(SUBSTR(EMPNO,1,2),4,'*') AS MASKING_EMPNO,
     ENAME, 
@@ -328,20 +331,34 @@ SELECT EMPNO,
 FROM EMP
 WHERE LENGTH(ENAME) = 5;
 
--- 2. 
+-- 2. EMP테이블 사원들의 월 평균 근무일수는 21.5일. 하루 근무를 8시간으로 보았을 때
+-- 사원들의 하루 급여(DAY-PAY)와 시급(TIME-PAY)을 계산하여 결과 출력.
+-- 단, 하루 급여는 소수점 세 번째 자리에서 버리고, 시급은 두 번째 소수점에서 반올림  
+
 SELECT EMPNO, ENAME, SAL,
     TRUNC( SAL / 21.5, 2) AS 일급여,
     ROUND( SAL / 21.5 / 8, 1) AS 시급
 FROM EMP;
 
--- 3.
+-- 3.입사일을 기준으로 3개월이 지난 후 첫 월요일에 정직원이 된다.
+-- 사원들이 정직원이 되는 날짜를 YYYY-MM-DD 형식으로 출력. 
+-- 단, 추가 수당(COMM)이 없는 사원의 추가 수당은 N/A로 출력
+
 -- NEXT_DAY(기준일자, 찾을 요일) : 기준 일자 다음에 오는 날짜를 구하는 함수  
+
 SELECT EMPNO, ENAME, HIREDATE, 
     TO_CHAR(NEXT_DAY(ADD_MONTHS(HIREDATE,3),'MON'),'YYYY/MM/DD') AS 정직원진급,
     NVL(TO_CHAR(COMM),'N/A') AS COMM 
 FROM EMP;
 
--- 4. 
+-- 4. EMP 테이블의 모든 사원을 대상으로 직속 상관의 사원 번호를 다음과 같은 조건을 기준으로 변환해서 CHG_MGR열에 출력
+-- 직속 상관의 사원번호가 존재하지 않을 경우 : 000
+-- 직속 상관의 사원번호 앞 두 자리가 75일 경우 : 5555
+-- 직속 상관의 사원번호 앞 두 자리가 76일 경우 : 6666
+-- 직속 상관의 사원번호 앞 두 자리가 77일 경우 : 7777
+-- 직속 상관의 사원번호 앞 두 자리가 78일 경우 : 8888
+-- 그 외 직속 상관 사원 번호의 경우 : 본래 직속 상관의 사원 번호 그대로 출력
+
 SELECT EMPNO, ENAME, MGR, 
     CASE 
         WHEN MGR IS NULL THEN '0000'
@@ -370,4 +387,4 @@ SELECT ENAME, SUM(SAL)
 
 SELECT DEPTNO, SUM(SAL), COUNT(*), ROUND(AVG(SAL)), MAX(SAL), MIN(SAL)
 FROM EMP
-GROUP BY DEPTNO;
+GROUP BY DEPTNO;   

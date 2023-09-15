@@ -8,13 +8,13 @@
 
 SELECT -10, ABS(-10) FROM DUAL;
 
--- ROUNT : 반올림한 결과를 반환하는 함수 / ROUNT(숫자, 반올림할 위치), 위치는 음수값도 줄 수 있다.  
-SELECT TRUNC(1234.5678) AS TRUNC,
-    TRUNC(1234.5678, 0) AS ROUND_0,
-    TRUNC(1234.5678, 1) AS ROUND_1,
-    TRUNC(1234.5678, 2) AS ROUND_2,
-    TRUNC(1234.5678, -1) AS ROUND_MINUS1,
-    TRUNC(1234.5678, -2) AS ROUND_MINUS2
+-- ROUND : 반올림한 결과를 반환하는 함수 / ROUND(숫자, 반올림할 위치), 위치는 음수값도 줄 수 있다.  
+SELECT ROUND(1234.5678) AS TRUNC,
+    ROUND(1234.5678, 0) AS ROUND_0,
+    ROUND(1234.5678, 1) AS ROUND_1,
+    ROUND(1234.5678, 2) AS ROUND_2,
+    ROUND(1234.5678, -1) AS ROUND_MINUS1,
+    ROUND(1234.5678, -2) AS ROUND_MINUS2
 FROM DUAL;
 
 -- TRUNC : 버림한 결과를 반환하는 함수 ([숫자(필수)], [버림 위치(선택)])
