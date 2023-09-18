@@ -371,20 +371,4 @@ SELECT EMPNO, ENAME, MGR,
 FROM EMP;
 
 
--- 다중행 함수 :  여러 행에 대한 함수가 적용되어 하나의 결과를 나타내는 함수 (집계)
--- 여러 행이 입력 되어 결과가 하나의 행으로 출력  
-SELECT SUM(SAL)
-    FROM EMP;
-
-SELECT SUM(SAL), ENAME
-    FROM EMP
-GROUP BY ENAME; 
-
-SELECT ENAME, SUM(SAL)
-    FROM EMP;
-
--- GROUP BY : 그룹으로 묶을 때 
-
-SELECT DEPTNO, SUM(SAL), COUNT(*), ROUND(AVG(SAL)), MAX(SAL), MIN(SAL)
-FROM EMP
-GROUP BY DEPTNO;   
+-- 0915 수업 내용 --
