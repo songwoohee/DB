@@ -328,3 +328,4 @@ SET LOC = 'SEOUL'
 WHERE DEPTNO = 30;
 
 --- 0919 수업내용 ---
+
