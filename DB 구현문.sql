@@ -15,13 +15,6 @@ CREATE TABLE CUSTOMER(
     ACCOUNT NUMBER(20) NOT NULL
 );
 
--- 드랍 순서
-DROP TABLE REPLY; -- 생성
-DROP TABLE WRITE; -- 생성 
-DROP TABLE LOAN_INFO;  -- 생성
-DROP TABLE LOAN_PRODUCT; -- 생성 
-DROP TABLE CUSTOMER; -- 생성
-
 
 -- 고객번호 부여 시퀀스 
 CREATE SEQUENCE USER_NUMBER
@@ -85,8 +78,6 @@ INCREMENT BY 1
 START WITH 1
 NOCYCLE
 NOCACHE;
-
-SELECT * FROM LOAN_PRODUCT;
 
 INSERT INTO LOAN_PRODUCT(PRODUCT_NUMBER, PRODUCT_NAME, BANK_NAME, RATE, MAX_LOAN, MAX_MONTH, JOB, DETAIL)
 VALUES (PRODUCT_NUMBER.NEXTVAL, '주거래직장인대출', '우리', 5, 200, 60, '직장인', '상품 특징 : 급여소득자 고객을 위한 우리은행 대표 신용대출, 대출 대상 : 1. 건강보험 직장 가입자로 등록. 2. 건강보험 동일 사업장 6개월이상 납부, 대출 한도 : 연소득의 150% 범위내 최대 2억 가능 , 대출 기간 : 최대 5년, 대출 금리 : 최고 금리 5%, 연체이자율 적용금리+연 3%, 상환 방법 : 원리금분할상환대출, 중도상환해약금 : 요율 고정금리 0.7% / 변동금리 0.6%, 고객부담비용 : 인지세 5천만원이하 면제, 5천만원~1억: 7만원(각 3만5천원)');
@@ -166,35 +157,3 @@ WRT_NUM NUMBER(10) REFERENCES WRITE(WRT_NUM),
 COMMNET_CON VARCHAR2(50),
 USER_ID VARCHAR2(8) REFERENCES CUSTOMER(USER_ID)
 );
-
-
-
-
-
-
--- 1. 고객이 직접 입력한 직업 데이터를 끌어 올 수 있게
--- (기존고객 있으면 그 테이블에서 끌어 올수 있게 )
--- 2. 나이나, 시용
-
--- 3. 직업에 따라 분류
--- 공무원, 일반직장인, 무직(주부 학생 등) 
-
--- 이 직업과 상품이 일ㅇ치하는지 필터.
--- 일차하면 고객에게 출력
--- 아니면 
-
--- 1. 기존 고객 직업 정보 끌어 오기    고객정보안에 있는 ID에 따른 직업정보, 신용정보를 끌어와야함. 
--- 고객 직업 정보 있는 테이블 조회 
-SELECT USER_ID, NAME, JOB, CREDIT_SCORE_N, CREDIT_SCORE_K
-FROM CUSTOMER;
-
-
--- 2. 입력 받은 고객 직업 정보 끌어 오기 > 입력 받은 고객은 자바에서 구현하는게 맞음  
--- 상품테이블에서 입력한 상품직업, 고객정보 직업이랑 동일한지 조회 JOIN써서
-
-SELECT C.USER_ID, C.NAME, L.JOB, L.PRODUCT_NAME
-FROM CUSTOMER C JOIN LOAN_PRODUCT L
-ON C.JOB = L.JOB
-ORDER BY NAME;
-
-
